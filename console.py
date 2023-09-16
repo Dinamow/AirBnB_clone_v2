@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import os
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -17,7 +18,14 @@ class HBNBCommand(cmd.Cmd):
 
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
-
+    env_vars = {
+                'storage_type': os.getenv('HBNB_TYPE_STORAGE', default=None),
+                'running_env': os.getenv('HBNB_ENV', default=None),
+                'mysql_user': os.getenv('HBNB_MYSQL_USER', default=None),
+                'mysql_password': os.getenv('HBNB_MYSQL_PWD', default=None),
+                'mysql_host': os.getenv('HBNB_MYSQL_HOST', default=None),
+                'mysql_namedb': os.getenv('HBNB_MYSQL_DB', default=None),
+              }
     classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
