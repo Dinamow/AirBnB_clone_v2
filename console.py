@@ -11,7 +11,6 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-import signal
 
 
 class HBNBCommand(cmd.Cmd):
@@ -342,11 +341,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    def handler(signum, frame):
-        """hendle Ctrl + c"""
-
-        print()
-        exit()
-
-    signal.signal(signal.SIGINT, handler)
     HBNBCommand().cmdloop()
