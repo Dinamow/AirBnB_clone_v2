@@ -124,7 +124,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-
         myArags = args.split(" ")
         if not myArags[0]:
             print("** class name missing **")
@@ -138,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
             key = new[0]
             value = new[1]
             if value[0] == '"' and value[-1] == '"':
+                value = str(value[1:-1])
                 value = value.replace("_", " ")
             else:
                 value = eval(value)
