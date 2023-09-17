@@ -140,7 +140,8 @@ class HBNBCommand(cmd.Cmd):
                 new[1] = new[1].replace("\"", "")
             else:
                 new[1] = eval(new[1])
-            setattr(new_instance, new[0].replace("'", ""), new[1])
+            print(f"key: {new[0]}\tvalue: {new[1]}")
+            setattr(new_instance, new[0], new[1])
 
         storage.save()
         print(new_instance.id)
