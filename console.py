@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import signal
 
 
 class HBNBCommand(cmd.Cmd):
@@ -123,6 +124,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
+
         myArags = args.split(" ")
         if not myArags[0]:
             print("** class name missing **")
@@ -130,14 +132,17 @@ class HBNBCommand(cmd.Cmd):
         elif myArags[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[myArags[0]]()
-        print(myArags[1:])
+        new_instance = self.classes[myArags[0]]()
         for prop in myArags[1:]:
             indexOfEqual = prop.index("=")
             key = prop[0:indexOfEqual]
             value = prop[indexOfEqual + 2: -1]
-            print(f"key: {key}")
-            print(f"value: {value}")
+            try:
+                value = eval(value)
+            except NameError:
+                value = value.replace("_", " ")
+            setattr(new_instance, key, value)
+
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -338,4 +343,11 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
+    def handler(signum, frame):
+        """hendle Ctrl + c"""
+
+        print()
+        exit()
+
+    signal.signal(signal.SIGINT, handler)
     HBNBCommand().cmdloop()
