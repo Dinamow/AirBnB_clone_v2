@@ -134,14 +134,13 @@ class HBNBCommand(cmd.Cmd):
             return
         new_instance = self.classes[myArags[0]]()
         for prop in myArags[1:]:
-            indexOfEqual = prop.index("=")
-            key = prop[0:indexOfEqual]
-            value = prop[indexOfEqual + 2: -1]
-            try:
-                value = eval(value)
-            except (SyntaxError, NameError):
-                value = value.replace("_", " ")
-            setattr(new_instance, key, value)
+            new = prop.split("=")
+            if '"' in new[1]:
+                new[1] = new[1].replace("_", " ")
+                new[1] = new[1].replace("\"", "")
+            else:
+                new[1] = eval(new[1])
+            setattr(new_instance, new[0].replace("'", ""), new[1])
 
         storage.save()
         print(new_instance.id)
