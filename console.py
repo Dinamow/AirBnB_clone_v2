@@ -123,13 +123,21 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        myArags = args.split(" ")
+        if not myArags[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif myArags[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[myArags[0]]()
+        print(myArags[1:])
+        for prop in myArags[1:]:
+            indexOfEqual = prop.index("=")
+            key = prop[0:indexOfEqual]
+            value = prop[indexOfEqual + 2: -1]
+            print(f"key: {key}")
+            print(f"value: {value}")
         storage.save()
         print(new_instance.id)
         storage.save()
