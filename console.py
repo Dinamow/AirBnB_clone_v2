@@ -135,13 +135,14 @@ class HBNBCommand(cmd.Cmd):
         new_instance = self.classes[myArags[0]]()
         for prop in myArags[1:]:
             new = prop.split("=")
-            if '"' in new[1]:
-                new[1] = new[1].replace("_", " ")
-                new[1] = new[1].replace("\"", "")
+            key = new[0]
+            value = new[1]
+            if '"' in value:
+                value = value.replace("_", " ")
+                value = value.replace("\"", "")
             else:
-                new[1] = eval(new[1])
-            print(f"key: {new[0]}\tvalue: {new[1]}")
-            setattr(new_instance, new[0], new[1])
+                value = eval(value)
+            setattr(new_instance, key, value)
 
         storage.save()
         print(new_instance.id)
