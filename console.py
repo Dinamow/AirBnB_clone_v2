@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             value = prop[indexOfEqual + 2: -1]
             try:
                 value = eval(value)
-            except NameError:
+            except (SyntaxError, NameError):
                 value = value.replace("_", " ")
             setattr(new_instance, key, value)
 
