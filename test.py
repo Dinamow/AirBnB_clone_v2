@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-from models.base_model import BaseModel
+from models.city import City
 
 
-person = BaseModel()
-
-print(f"person: {person.to_dict()}")
+person = City()
+print(f"person: {person.to_dict()}\n\n")
+print(f"person: {person}")
