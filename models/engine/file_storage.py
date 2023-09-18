@@ -10,12 +10,13 @@ class FileStorage:
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
-        for delete_ob in self.__objects:
-            indexOfDot = delete_ob.index(".")
-            if obj.id == delete_ob[indexOfDot + 1:]:
-                del (self.__objects[delete_ob])
-                self.save()
-                break
+        if obj:
+            for delete_ob in self.__objects:
+                indexOfDot = delete_ob.index(".")
+                if obj.id == delete_ob[indexOfDot + 1:]:
+                    del (self.__objects[delete_ob])
+                    self.save()
+                    break
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
