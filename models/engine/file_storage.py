@@ -13,7 +13,6 @@ class FileStorage:
         for delete_ob in self.__objects:
             indexOfDot = delete_ob.index(".")
             if obj.id == delete_ob[indexOfDot + 1:]:
-                print("hello")
                 del (self.__objects[delete_ob])
                 self.save()
                 break
