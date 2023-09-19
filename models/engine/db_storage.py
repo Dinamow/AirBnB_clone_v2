@@ -2,13 +2,22 @@
 """this is class file"""
 import os
 from sqlalchemy import create_engine
-from models.base_model import Base
+from models.base_model import Base, BaseModel
+from sqlalchemy.orm import Session
+from models.amenity import Amenity
+from models.review import Review
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.user import User
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class db_storage:
     """this is class"""
     __engine = None
     __session = None
+
     def __init__(self):
         usr = os.getenv("HBNB_MYSQL_USER")
         host = os.getenv("HBNB_MYSQL_HOST")
@@ -21,16 +30,42 @@ class db_storage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        self.__session
+        """return all or cls"""
+
+        result = {}
+        if not cls:
+            var = self.__session.query().all()
+        else:
+            var = self.__session.query(cls).all()
+            for obj in var:
+                objkey = f"{obj.__class__.__name__}.{obj.id}"
+                result[objkey] = obj
+        return result
 
     def new(self, obj):
-        pass
+        """add the object"""
+
+        if obj is not None:
+            self.__session.add(obj)
 
     def save(self):
-        pass
+        """commit all changes"""
+
+        self.__session.commit()
 
     def delete(self, obj=None):
-        pass
+        """delete from the db"""
+        if obj is not None:
+            self.__session.query(type(obj)).filter
+            (type(obj).id == obj.id).delete()
 
     def reload(self):
-        pass
+        """
+        create all tables in the database
+        create the current database session
+        """
+
+        Base.metadata.create_all(self.__engine)
+        oursession = sessionmaker(expire_on_commit=False,
+                                  bind=self.__engine)
+        self.__session = scoped_session(oursession)()

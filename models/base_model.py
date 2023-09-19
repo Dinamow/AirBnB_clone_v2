@@ -4,15 +4,17 @@ import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from models.engine.file_storage import FileStorage
+from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
-from sqlalchemy import Column, String, DateTime
+
 
 class BaseModel:
     """A base class for all hbnb models"""
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
+
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
 
@@ -24,15 +26,15 @@ class BaseModel:
             if not kwargs.get('updated_at'):
                 self.updated_at = datetime.now()
             else:
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                    '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                    kwargs['updated_at'], '%Y-%m-%dT%H:%M:%S.%f')
             if not kwargs.get('created_at'):
                 self.created_at = datetime.now()
             else:
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'], '%Y-%m-%dT%H:%M:%S.%f')
             for key, value in kwargs.items():
-                setattr(self, key, value)    
+                setattr(self, key, value)
 
     def __str__(self):
         """Returns a string representation of the instance"""
