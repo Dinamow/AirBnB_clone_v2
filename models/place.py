@@ -3,11 +3,11 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from os import getenv
+from sqlalchemy.orm import relationship
 
 
 class Place(BaseModel, Base):
     """ A place to stay """
-
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
@@ -19,8 +19,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-
-    if getenv("HBNB_TYPE_STORAGE") != "db":
+    if getenv("HBNB_TYPE_STORAGE") == "file":
+        reviews = relationship('Review', backref="place", cascade="delete")
+    else:
         city_id = ""
         user_id = ""
         name = ""
@@ -32,3 +33,15 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+        @property
+        def reviews(self):
+            """returns the list of reviews"""
+            from models import storage
+            from models.review import Review
+
+            result = []
+            for value in storage.all(Review).values():
+                if value.place_id == self.id:
+                    result.append(value)
+            return result
