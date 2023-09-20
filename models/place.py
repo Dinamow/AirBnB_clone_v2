@@ -58,3 +58,20 @@ class Place(BaseModel, Base):
                 if value.place_id == self.id:
                     result.append(value)
             return result
+
+        @property
+        def amenities(self):
+            """Returns the amenities of this Place"""
+            from models import storage
+            amenities_of_place = []
+            for value in storage.all(Amenity).values():
+                if value.id in self.amenity_ids:
+                    amenities_of_place.append(value)
+            return amenities_of_place
+
+        @amenities.setter
+        def amenities(self, value):
+            """Adds an amenity to this Place"""
+            if type(value) is Amenity:
+                if value.id not in self.amenity_ids:
+                    self.amenity_ids.append(value.id)
