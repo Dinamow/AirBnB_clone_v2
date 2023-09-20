@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey, Integer, Float
 from os import getenv
 from sqlalchemy.orm import relationship
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -19,8 +20,9 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
-    if getenv("HBNB_TYPE_STORAGE") == "file":
-        reviews = relationship('Review', backref="place", cascade="delete")
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        reviews = relationship('Review', backref="place",
+                               cascade="all, delete, delete-orphan")
     else:
         city_id = ""
         user_id = ""
@@ -33,12 +35,12 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+        reviews = None
 
         @property
         def reviews(self):
             """returns the list of reviews"""
             from models import storage
-            from models.review import Review
 
             result = []
             for value in storage.all(Review).values():
