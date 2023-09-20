@@ -2,8 +2,7 @@
 """this is class file"""
 import os
 from sqlalchemy import create_engine
-from models.base_model import Base, BaseModel
-from sqlalchemy.orm import Session
+from models.base_model import Base
 from models.amenity import Amenity
 from models.review import Review
 from models.city import City
@@ -33,8 +32,13 @@ class db_storage:
         """return all or cls"""
 
         result = {}
-        if not cls:
-            var = self.__session.query().all()
+        if cls is None:
+            classes = [City, State, Amenity, Review, Place, User]
+            for classOne in classes:
+                var = self.__session.query(classOne).all()
+                for obj in var:
+                    objkey = f"{obj.__class__.__name__}.{obj.id}"
+                    result[objkey] = obj
         else:
             var = self.__session.query(cls).all()
             for obj in var:
