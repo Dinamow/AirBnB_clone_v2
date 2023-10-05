@@ -2,11 +2,12 @@
 # install nginx
 
 sudo apt-get update
-sudo apt-get install nginx -y
+if ! [ -x "$(command -v nginx)" ]; then
+	sudo apt-get install nginx -y
+fi
 
-sudo mkdir -p data/web_static/releases/
-sudo mkdir -p data/web_static/shared/
 sudo mkdir -p data/web_static/releases/test/
+sudo mkdir -p data/web_static/shared/
 sudo touch data/web_static/releases/test/index.html
 echo "<html>
 	<head>
@@ -16,10 +17,18 @@ echo "<html>
 	</body>
 </html>" | sudo tee  data/web_static/releases/test/index.html
 
-sudo ln -sf data/web_static/releases/test data/web_static/current
+sudo rm -rf /data/web_static/current
+ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 sudo chown -R ubuntu:ubuntu /data/
 
-sudo sed -i "/listen 80 default_server;/ a \\\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n" /etc/nginx/sites-enabled/default
+config_file="/etc/nginx/sites-available/default"
+sed -i '/hbnb_static/d' "$config_file"
+
+echo "
+location /hbnb_static {
+    alias /data/web_static/current/;
+    index index.html;
+}" >> "$config_file"
 
 sudo service nginx restart
