@@ -23,14 +23,19 @@ def do_pack():
 def do_deploy(archive_path):
     """ distributes an archive to your web servers"""
     if not path.exists(archive_path):
-        return None
-    put(archive_path, "/tmp/")
-    file_name = path.basename(archive_path)
-    target_dir_name = f"/data/web_static/releases/{file_name[:-4]}"
-    run(f"sudo mkdir -p /data/web_static/releases/{target_dir_name}")
-    res = f"/data/web_static/releases/{target_dir_name}"
-    run(f"sudo tar -xzf {archive_path} -C {res}")
-    run(f"sudo rm /tmp/{file_name}")
-    run("sudo rm -rf /data/web_static/current")
-    run(f"ln -s {res} /data/web_static/current")
-    return True
+        return False
+    try:
+        put(archive_path, "/tmp/")
+        file_name = path.basename(archive_path)
+        target_dir_name = f"/data/web_static/releases/{file_name[:-4]}"
+        run(f"sudo mkdir -p {target_dir_name}")
+        run(f"sudo tar -xzf /tmp/{file_name} -C {target_dir_name}")
+        run(f"sudo rm /tmp/{file_name}")
+        run("sudo rm -rf /data/web_static/current")
+        run(f"sudo ln -s {target_dir_name} /data/web_static/current")
+        return True
+    except Exception as e:
+        if e:
+            return False
+        else:
+            return False
