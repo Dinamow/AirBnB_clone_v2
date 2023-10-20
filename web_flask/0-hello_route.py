@@ -1,11 +1,12 @@
 #!/usr/bin/python3
-#this is flask script
+"""this is the flask hello"""
 from flask import Flask
 
 AirBnB = Flask(__name__)
 
 @AirBnB.route("/", strict_slashes=False)
 def homepage():
+    """home page function"""
     return "Hello HBNB!"
 
 if __name__ == "__main__":
