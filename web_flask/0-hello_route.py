@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+#this is flask script
 from flask import Flask
 
 AirBnB = Flask(__name__)
