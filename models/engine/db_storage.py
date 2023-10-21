@@ -73,3 +73,7 @@ class db_storage:
         oursession = sessionmaker(expire_on_commit=False,
                                   bind=self.__engine)
         self.__session = scoped_session(oursession)()
+
+    def close(self):
+        """ call close on private session. """
+        self.__session.close()
