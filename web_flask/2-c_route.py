@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""this is the flask hello"""
+"""this is the flask c"""
 from flask import Flask
 
 
@@ -8,19 +8,19 @@ AirBnB = Flask(__name__)
 
 @AirBnB.route("/", strict_slashes=False)
 def homepage():
-    """home page function"""
+    """home function"""
     return "Hello HBNB!"
 
 
 @AirBnB.route("/hbnb", strict_slashes=False)
 def HBNBpage():
-    """home HBNH function"""
+    """HBNH function"""
     return "HBNB"
 
 
 @AirBnB.route("/c/<text>", strict_slashes=False)
 def Cpage(text):
-    """home HBNH function"""
+    """c function"""
     text = text.replace("_", " ")
     return f"C {text}"
 
