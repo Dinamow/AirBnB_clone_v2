@@ -4,15 +4,16 @@ from flask import Flask
 
 
 AirBnB = Flask(__name__)
+AirBnB.url_map.strict_slashes = False
 
 
-@AirBnB.route("/", strict_slashes=False)
+@AirBnB.route("/")
 def homepage():
     """home function"""
     return "Hello HBNB!"
 
 
-@AirBnB.route("/hbnb", strict_slashes=False)
+@AirBnB.route("/hbnb")
 def HBNBpage():
     """HBNH function"""
     return "HBNB"
