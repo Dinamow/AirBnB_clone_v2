@@ -29,7 +29,7 @@ def Cpage(text):
 def pythonpage(text="is cool"):
     """home python function"""
     text = text.replace("_", " ")
-    return f"C {text}"
+    return f"Python {text}"
 
 
 if __name__ == "__main__":
