@@ -25,6 +25,7 @@ def Cpage(text):
     return f"C {text}"
 
 
+@AirBnB.route("/python", strict_slashes=False)
 @AirBnB.route("/python/<text>", strict_slashes=False)
 def pythonpage(text="is cool"):
     """home python function"""
