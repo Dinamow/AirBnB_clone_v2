@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """this is the flask odd or even"""
-from flask import Flaskrender_template
+from flask import Flask, render_template
 
 
 AirBnB = Flask(__name__)
